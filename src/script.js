@@ -192,6 +192,20 @@ gpgpu.particlesVariable.material.uniforms.uFlowFieldStrength =
 	new THREE.Uniform(2);
 gpgpu.particlesVariable.material.uniforms.uFlowFieldFrequency =
 	new THREE.Uniform(0.5);
+gpgpu.particlesVariable.material.uniforms.uTimeMultiplier = new THREE.Uniform(
+	1,
+);
+gpgpu.particlesVariable.material.uniforms.uDecaySpeed = new THREE.Uniform(0.3);
+
+gpgpu.particlesVariable.material.uniforms.uFlowDirectionX = new THREE.Uniform(
+	0.0,
+);
+gpgpu.particlesVariable.material.uniforms.uFlowDirectionY = new THREE.Uniform(
+	0.0,
+);
+gpgpu.particlesVariable.material.uniforms.uFlowDirectionZ = new THREE.Uniform(
+	0.0,
+);
 
 // Init
 gpgpu.computation.init();
@@ -282,31 +296,58 @@ scene.add(particles.points);
 gui.addColor(debugObject, "clearColor").onChange(() => {
 	renderer.setClearColor(debugObject.clearColor);
 });
-gui
+const guiParticules = gui.addFolder("Particules");
+guiParticules
 	.add(particles.material.uniforms.uSize, "value")
 	.min(0)
 	.max(1)
 	.step(0.001)
-	.name("uSize");
-gui
+	.name("Taille");
+guiParticules
 	.add(gpgpu.particlesVariable.material.uniforms.uFlowFieldInfluence, "value")
 	.min(0)
 	.max(1)
 	.step(0.01)
-	.name("Influence du Flow Field ");
-gui
+	.name("Influence du Flow Field");
+guiParticules
 	.add(gpgpu.particlesVariable.material.uniforms.uFlowFieldStrength, "value")
 	.min(0)
 	.max(10)
 	.step(0.01)
-	.name("Force du Flow Field ");
-gui
+	.name("Force du Flow Field");
+guiParticules
 	.add(gpgpu.particlesVariable.material.uniforms.uFlowFieldFrequency, "value")
 	.min(0)
 	.max(1)
 	.step(0.001)
-	.name("Fréquence du Flow Field ");
-gui.add(gpgpu.debug, "visible").name("Voir debug");
+	.name("Fréquence du Flow Field");
+guiParticules
+	.add(gpgpu.particlesVariable.material.uniforms.uDecaySpeed, "value")
+	.min(0)
+	.max(5)
+	.step(0.01)
+	.name("Vitesse de vieillissement");
+const guiFlowDirection = gui.addFolder("Flow Direction");
+guiFlowDirection
+	.add(gpgpu.particlesVariable.material.uniforms.uFlowDirectionX, "value")
+	.min(-10)
+	.max(10)
+	.step(0.01)
+	.name("Flow Direction X");
+guiFlowDirection
+	.add(gpgpu.particlesVariable.material.uniforms.uFlowDirectionY, "value")
+	.min(-10)
+	.max(10)
+	.step(0.01)
+	.name("Flow Direction Y");
+guiFlowDirection
+	.add(gpgpu.particlesVariable.material.uniforms.uFlowDirectionZ, "value")
+	.min(-10)
+	.max(10)
+	.step(0.01)
+	.name("Flow Direction Z");
+const guiDebug = gui.addFolder("Debug");
+guiDebug.add(gpgpu.debug, "visible").name("Voir debug");
 
 /**
  * Animate

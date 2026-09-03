@@ -73,9 +73,11 @@ Les fichiers optimisés seront générés dans le dossier `dist/`.
 
 ### Flow Field
 
-- `FlowField Influence` : seuil sur le bruit déterminant la proportion de particules réellement affectées par le flow field
-- `FlowField Strength` : intensité du déplacement appliqué aux particules
-- `FlowField Frequency` : fréquence spatiale du bruit(bas => particules proches = mouvement cohérent entre particules voisines, haut => direction plus chaotiques même pour les particules proches)
+- `Influence du Flow Field` : seuil sur le bruit déterminant la proportion de particules réellement affectées par le flow field
+- `Force du Flow Field` : intensité du déplacement appliqué aux particules
+- `Fréquence du Flow Field` : fréquence spatiale du bruit(bas => particules proches = mouvement cohérent entre particules voisines, haut => direction plus chaotiques même pour les particules proches)
+- `Vitesse de vieillissement` : durée de vie des particules
+- `Flow Direction X/Y/Z` : direction générale des particules selon un vecteur3. À noter que 0; 0; 0 aucune direction n'est désignée, les particules respectent le simplexNoise4d, plutôt que de dériver vers le centre en 0; 0; 0
 
 ### Debug
 

@@ -7,10 +7,17 @@ uniform float uFlowFieldInfluence;  // Seuil sur le bruit qui détermine la prop
 uniform float uFlowFieldStrength;   // Intensité du déplacement dans le flow field
 uniform float uFlowFieldFrequency;  // Fréquence spatiale du bruit (échelle du flow field)
 
+uniform float uDecaySpeed; 
+
+uniform float uFlowDirectionX; 
+uniform float uFlowDirectionY; 
+uniform float uFlowDirectionZ; 
+
 #include ../includes/simplexNoise4d.glsl
 
 void main(){
   float time = uTime * 0.2;
+  vec3 flowFieldGlobalDirection = vec3(uFlowDirectionX, uFlowDirectionY, uFlowDirectionZ);
 
   // Coordonnée UV du pixel courant = position de la particule qu'on traite dans le FBO
   vec2 uv = gl_FragCoord.xy / resolution.xy;
@@ -44,11 +51,14 @@ void main(){
       simplexNoise4d(vec4(particle.xyz * uFlowFieldFrequency + 2.0, time))
     );
     flowField = normalize(flowField);
+    flowField += flowFieldGlobalDirection;
+    flowField = normalize(flowField);
+    // flowField = normalize(flowField);
     // On finit par modifier la position en fonction de la direction, du temps, de l'influence et de la force
     particle.xyz += flowField * uDeltaTime * strength * uFlowFieldStrength;
 
     // Vieillissement de la particule
-    particle.a += uDeltaTime * 0.3;
+    particle.a += uDeltaTime * uDecaySpeed;
   }
 
   gl_FragColor = particle;
